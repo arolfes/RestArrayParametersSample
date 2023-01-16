@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,18 +15,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Controller.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ControllerServletRequest.class)
 @AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude=SecurityAutoConfiguration.class)
-public class ControllerMvcTest {
+@EnableAutoConfiguration(exclude= SecurityAutoConfiguration.class)
+public class ControllerServletRequestMvcTest {
 
     @Autowired
     private MockMvc mvc;
 
-    // This Test fails
     @Test
     void oneParameter() throws Exception {
-        mvc.perform(get("/arrays?array=1,2,3,4,5")
+        mvc.perform(get("/servletRequestArrays?array=1,2,3,4,5")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -36,7 +34,7 @@ public class ControllerMvcTest {
 
     @Test
     void parameterTwoTimes() throws Exception {
-        mvc.perform(get("/arrays?array=1,2&array=3,4,5")
+        mvc.perform(get("/servletRequestArrays?array=1,2&array=3,4,5")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -46,7 +44,7 @@ public class ControllerMvcTest {
 
     @Test
     void parameterThreeTimes() throws Exception {
-        mvc.perform(get("/arrays?array=1,2&array=3&array=4,5")
+        mvc.perform(get("/servletRequestArrays?array=1,2&array=3&array=4,5")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
