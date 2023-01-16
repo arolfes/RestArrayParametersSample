@@ -1,10 +1,9 @@
 package info.novatec.api;
 
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.DataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,5 +16,10 @@ public class Controller {
     public List<String> getArrayQueryParameters(@RequestParam("array") String[] array) {
 
         return Arrays.asList(array);
+    }
+
+    @InitBinder
+    private void initBinder(DataBinder binder) {
+        binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(null));
     }
 }

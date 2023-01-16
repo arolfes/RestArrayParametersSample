@@ -24,7 +24,6 @@ public class ControllerMvcTest {
     @Autowired
     private MockMvc mvc;
 
-    // This Test fails
     @Test
     void oneParameter() throws Exception {
         mvc.perform(get("/arrays?array=1,2,3,4,5")
